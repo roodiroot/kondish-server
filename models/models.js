@@ -35,7 +35,7 @@ const Product = sequelize.define(
     img_array: { type: DataTypes.ARRAY(DataTypes.STRING), allowNull: false },
     img: { type: DataTypes.STRING, allowNull: false },
     description: { type: DataTypes.STRING(1234) },
-    hit: { type: DataTypes.BOOLEAN, allowNull: false },
+    hit: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
   },
   {
     timestamps: false,

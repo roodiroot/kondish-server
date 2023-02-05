@@ -27,6 +27,7 @@ class ProductController {
         energy_class,
         compressor,
         description,
+        hit,
       } = req.body;
       // валидация обязательных значений на наличие
       if (!vendor_code) return next(ApiError.badRequest('не указан vendor_code!'));
@@ -141,7 +142,9 @@ class ProductController {
         description,
         img: fileNameMine,
         img_array: imgArray,
+        hit,
       });
+
       res.json(product);
     } catch (error) {
       next(ApiError.badRequest('Не предвиденная ошибка'));
