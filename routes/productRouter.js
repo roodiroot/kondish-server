@@ -1,12 +1,13 @@
-const Router = require('express');
+const Router = require("express");
 
-const productController = require('../controllers/productsController.js');
-const checkRole = require('../middleware/checkRoleMiddleware.js');
+const productController = require("../controllers/productsController.js");
+const checkRoleMiddleware = require("../middleware/checkRoleMiddleware.js");
 
 const router = new Router();
 
-router.get('/', productController.getAll);
-router.get('/:id', productController.getOne);
-router.post('/', checkRole('ADMIN'), productController.create);
+router.get("/", productController.getAll);
+router.get("/:id", productController.getOne);
+router.post("/", checkRoleMiddleware("ADMIN"), productController.create);
+router.put("/", checkRoleMiddleware("ADMIN"), productController.update);
 
 module.exports = router;
