@@ -73,6 +73,18 @@ class ArticlesController {
     const article = await Articles.findOne({ where: { id } });
     res.json(article);
   }
+  // УДАЛЕНИЕ ARTICLE
+  async delete(req, res, next) {
+    try {
+      const { id } = req.body;
+      const status = await Articles.destroy({
+        where: { id },
+      });
+      res.json({ status });
+    } catch (error) {
+      next(ApiError.badRequest("Не обработанная ошибка"));
+    }
+  }
 }
 
 module.exports = new ArticlesController();

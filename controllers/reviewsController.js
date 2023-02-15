@@ -45,6 +45,18 @@ class ReviewsController {
     const review = await Reviews.findOne({ where: { id } });
     res.json(review);
   }
+  // УДАЛЕНИЕ ОТЗЫВА
+  async delete(req, res, next) {
+    try {
+      const { id } = req.body;
+      const status = await Reviews.destroy({
+        where: { id },
+      });
+      res.json({ status });
+    } catch (error) {
+      next(ApiError.badRequest("Не обработанная ошибка"));
+    }
+  }
 }
 
 module.exports = new ReviewsController();

@@ -7,5 +7,6 @@ const router = new Router();
 router.get("/", reviewsController.getAll);
 router.get("/:id", reviewsController.getOne);
 router.post("/", checkRoleMiddleware("ADMIN"), reviewsController.create);
+router.delete("/", checkRoleMiddleware("ADMIN"), reviewsController.delete);
 
 module.exports = router;

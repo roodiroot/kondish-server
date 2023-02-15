@@ -8,5 +8,6 @@ const router = new Router();
 router.get("/", articlesController.getAll);
 router.get("/:id", articlesController.getOne);
 router.post("/", checkRoleMiddleware("ADMIN"), articlesController.create);
+router.delete("/", checkRoleMiddleware("ADMIN"), articlesController.delete);
 
 module.exports = router;

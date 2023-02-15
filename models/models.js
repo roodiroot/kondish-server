@@ -1,25 +1,26 @@
-const { DataTypes, Sequelize } = require('sequelize');
-const sequelize = require('../db.js');
+const { DataTypes, Sequelize } = require("sequelize");
+const sequelize = require("../db.js");
 
 const User = sequelize.define(
-  'user',
+  "user",
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     email: { type: DataTypes.STRING, unique: true },
     password: { type: DataTypes.STRING },
-    role: { type: DataTypes.STRING, defaultValue: 'USER' },
+    role: { type: DataTypes.STRING, defaultValue: "USER" },
   },
   {
     timestamps: false,
-  },
+  }
 );
 
 const Product = sequelize.define(
-  'product',
+  "product",
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-    vendor_code: { type: DataTypes.STRING, allowNull: false },
+    vendor_code: { type: DataTypes.STRING, allowNull: false, unique: true },
     brand: { type: DataTypes.STRING, allowNull: false },
+    external: { type: DataTypes.BOOLEAN, defaultValue: false },
     name: { type: DataTypes.STRING, allowNull: false, unique: true },
     price: { type: DataTypes.FLOAT, allowNull: false, defaultValue: 0 },
     pipe_length_max: { type: DataTypes.FLOAT, allowNull: false },
@@ -27,7 +28,7 @@ const Product = sequelize.define(
     heating_power: { type: DataTypes.FLOAT },
     cooling_power: { type: DataTypes.FLOAT },
     noise: { type: DataTypes.FLOAT },
-    WiFi: { type: DataTypes.STRING, defaultValue: 'Нет' },
+    WiFi: { type: DataTypes.STRING, defaultValue: "Нет" },
     brand_country: { type: DataTypes.STRING },
     manufacture_country: { type: DataTypes.STRING },
     energy_class: { type: DataTypes.STRING },
@@ -39,10 +40,10 @@ const Product = sequelize.define(
   },
   {
     timestamps: false,
-  },
+  }
 );
 const Articles = sequelize.define(
-  'articles',
+  "articles",
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     title: { type: DataTypes.STRING, allowNull: false },
@@ -53,10 +54,10 @@ const Articles = sequelize.define(
   },
   {
     timestamps: false,
-  },
+  }
 );
 const Reviews = sequelize.define(
-  'reviews',
+  "reviews",
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     service: { type: DataTypes.STRING, allowNull: false },
@@ -66,10 +67,10 @@ const Reviews = sequelize.define(
   },
   {
     timestamps: false,
-  },
+  }
 );
 const Gallery = sequelize.define(
-  'gallery',
+  "gallery",
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     description: { type: DataTypes.STRING(1234) },
@@ -78,7 +79,7 @@ const Gallery = sequelize.define(
   },
   {
     timestamps: false,
-  },
+  }
 );
 
 module.exports = {

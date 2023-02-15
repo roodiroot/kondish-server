@@ -11,8 +11,9 @@ class ProductController {
   async create(req, res, next) {
     try {
       // получаем параметрамеми из запроса
-      const {
+      let {
         vendor_code,
+        external,
         brand,
         name,
         price,
@@ -39,6 +40,9 @@ class ProductController {
         return next(
           ApiError.badRequest("Товар с таким названием уже существует!")
         );
+      const vendorProduct = await Product.findOne({ where: { vendor_code } });
+      if (vendorProduct)
+        return next(ApiError.badRequest("Товар с таким кодом уже существует!"));
       // валидация текстовых значений на кол-во символов
       if (
         (WiFi && WiFi.length >= 15) ||
@@ -161,6 +165,15 @@ class ProductController {
           }
         }
       }
+
+      if (external !== "true") {
+        external = false;
+      }
+      if (hit !== "true") {
+        hit = false;
+      }
+      // res.send(external);
+      // return;
 
       // ЗАПИСЬ В БД
       const product = await Product.create({
@@ -463,6 +476,18 @@ class ProductController {
         { where: { id } }
       );
       res.json(product);
+    } catch (error) {
+      next(ApiError.badRequest("Не обработанная ошибка"));
+    }
+  }
+  // УДАЛЕНИЕ ПРИБОРА
+  async delete(req, res, next) {
+    try {
+      const { id } = req.body;
+      const status = await Product.destroy({
+        where: { id },
+      });
+      res.json({ status });
     } catch (error) {
       next(ApiError.badRequest("Не обработанная ошибка"));
     }

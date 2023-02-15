@@ -1,8 +1,8 @@
-const imgLoader = require('../utils/imgLoader.js');
-const uuid = require('uuid');
+const imgLoader = require("../utils/imgLoader.js");
+const uuid = require("uuid");
 
-const ApiError = require('../error/ApiError.js');
-const { Gallery } = require('../models/models.js');
+const ApiError = require("../error/ApiError.js");
+const { Gallery } = require("../models/models.js");
 
 class GalleryController {
   async create(req, res, next) {
@@ -13,27 +13,31 @@ class GalleryController {
 
       //РАБОТА ПО ВАЛИДАЦИИ DESCRIPTION
       if (!description || description.length >= 1000) {
-        return next(ApiError.badRequest('Не коректно введено описание'));
+        return next(ApiError.badRequest("Не коректно введено описание"));
       }
       //ПРОВЕРКА НА ПРИХОД ФАЙЛОВ
       if (req.files === null) {
-        return next(ApiError.badRequest('Загрузите изображение'));
+        return next(ApiError.badRequest("Загрузите изображение"));
       }
       //РАБОТА ПО ВАЛИДАЦИИ НА ФОРМАТ И КОНВЕРТАЦИЯ КАРТИНКИ
       const { img } = req.files;
       const fileName = uuid.v4();
       if (img.length === undefined) {
         if (
-          img.mimetype === 'image/jpeg' ||
-          img.mimetype === 'image/png' ||
-          img.mimetype === 'image/jpg'
+          img.mimetype === "image/jpeg" ||
+          img.mimetype === "image/png" ||
+          img.mimetype === "image/jpg"
         ) {
-          imgLoader(img.data, fileName, 'gallery');
+          imgLoader(img.data, fileName, "gallery");
         } else {
-          return next(ApiError.badRequest('Возможна загрузка форматов типа jpg/jpeg/png'));
+          return next(
+            ApiError.badRequest("Возможна загрузка форматов типа jpg/jpeg/png")
+          );
         }
       } else {
-        return next(ApiError.badRequest('Вы загружаете более одного изображения'));
+        return next(
+          ApiError.badRequest("Вы загружаете более одного изображения")
+        );
       }
       // ЗАПИСЬ В БД
       const gallery = await Gallery.create({
@@ -53,6 +57,18 @@ class GalleryController {
     let offset = page * limit - limit;
     const articles = await Gallery.findAndCountAll({ limit, offset });
     res.json(articles);
+  }
+  // УДАЛЕНИЕ СТАТЬИ
+  async delete(req, res, next) {
+    try {
+      const { id } = req.body;
+      const status = await Gallery.destroy({
+        where: { id },
+      });
+      res.json({ status });
+    } catch (error) {
+      next(ApiError.badRequest("Не обработанная ошибка"));
+    }
   }
 }
 
