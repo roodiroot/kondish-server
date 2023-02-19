@@ -180,6 +180,7 @@ class ProductController {
         vendor_code,
         brand,
         name,
+        external,
         price: priceNumber,
         pipe_length_max: pipe_length_maxNumber,
         S: SNumber,
@@ -395,6 +396,8 @@ class ProductController {
           offset,
         });
       }
+      const cookie = "samesite=none";
+      res.setHeader("set-cookie", [cookie]);
       res.json(products);
     } catch (error) {
       res.json({ message: "Не обработанная ошибка2" });
