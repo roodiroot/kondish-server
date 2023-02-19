@@ -206,7 +206,18 @@ class ProductController {
   // ПОЛУЧЕНИЕ ВСЕХ ПРОДУКТОВ
   async getAll(req, res) {
     try {
-      let { page, limit, minPrice, maxPrice, brand, S, WiFi, hit } = req.query;
+      let {
+        page,
+        limit,
+        minPrice,
+        maxPrice,
+        brand,
+        S,
+        WiFi,
+        hit,
+        external,
+        compressor,
+      } = req.query;
       page = page || 1;
       limit = limit || 5;
       let offset = page * limit - limit;
@@ -219,8 +230,617 @@ class ProductController {
         hit2 = hit.toLowerCase().trim() === "true";
       }
 
+      if (external) {
+        if (external.toLowerCase().trim() === "true") {
+          external = "true";
+        }
+        if (external.toLowerCase().trim() === "false") {
+          external = "false";
+        }
+        if (
+          external.toLowerCase().trim() !== "false" &&
+          external.toLowerCase().trim() !== "true"
+        ) {
+          external = undefined;
+        }
+      }
+
+      console.log(external);
+
       let products;
-      if (brand && S && WiFi && !hit2) {
+      if (brand && S && WiFi && !hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            WiFi,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && WiFi && !hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            WiFi,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && WiFi && !hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            WiFi,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && WiFi && !hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            WiFi,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && !WiFi && !hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && !WiFi && !hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && !WiFi && !hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && !WiFi && !hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && WiFi && hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            WiFi,
+            hit: hit2,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && WiFi && hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            WiFi,
+            hit: hit2,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && WiFi && hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            WiFi,
+            hit: hit2,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && WiFi && hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            WiFi,
+            hit: hit2,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && !WiFi && hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            hit: hit2,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && !WiFi && hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            hit: hit2,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && !WiFi && hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            hit: hit2,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && !WiFi && hit2 && external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            hit: hit2,
+            external,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && WiFi && !hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            WiFi,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && WiFi && !hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            WiFi,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && WiFi && !hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            WiFi,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && WiFi && !hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            WiFi,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && !WiFi && !hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && !WiFi && !hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && !WiFi && !hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && !WiFi && !hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && WiFi && hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            WiFi,
+            hit: hit2,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && WiFi && hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            WiFi,
+            hit: hit2,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && WiFi && hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            WiFi,
+            hit: hit2,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && WiFi && hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            WiFi,
+            hit: hit2,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && !WiFi && hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            hit: hit2,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && !WiFi && hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            hit: hit2,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && !WiFi && hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            hit: hit2,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && !WiFi && hit2 && !external && compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            hit: hit2,
+            compressor,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && WiFi && !hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            WiFi,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && WiFi && !hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            WiFi,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && WiFi && !hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            WiFi,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && WiFi && !hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            WiFi,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && !WiFi && !hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && !WiFi && !hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && !WiFi && !hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && !WiFi && !hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && WiFi && hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            WiFi,
+            hit: hit2,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && WiFi && hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            WiFi,
+            hit: hit2,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && WiFi && hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            WiFi,
+            hit: hit2,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && WiFi && hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            WiFi,
+            hit: hit2,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && !WiFi && hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            S,
+            hit: hit2,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && !S && !WiFi && hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            brand,
+            hit: hit2,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && S && !WiFi && hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            S,
+            hit: hit2,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (!brand && !S && !WiFi && hit2 && external && !compressor) {
+        products = await Product.findAndCountAll({
+          where: {
+            price: { [Op.between]: [minPrice, maxPrice] },
+            hit: hit2,
+            external,
+          },
+          limit,
+          offset,
+        });
+      }
+      if (brand && S && WiFi && !hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -232,7 +852,7 @@ class ProductController {
           offset,
         });
       }
-      if (brand && !S && WiFi && !hit2) {
+      if (brand && !S && WiFi && !hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -243,7 +863,7 @@ class ProductController {
           offset,
         });
       }
-      if (!brand && S && WiFi && !hit2) {
+      if (!brand && S && WiFi && !hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -254,7 +874,7 @@ class ProductController {
           offset,
         });
       }
-      if (!brand && !S && WiFi && !hit2) {
+      if (!brand && !S && WiFi && !hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -264,7 +884,7 @@ class ProductController {
           offset,
         });
       }
-      if (brand && S && !WiFi && !hit2) {
+      if (brand && S && !WiFi && !hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -275,7 +895,7 @@ class ProductController {
           offset,
         });
       }
-      if (brand && !S && !WiFi && !hit2) {
+      if (brand && !S && !WiFi && !hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -285,7 +905,7 @@ class ProductController {
           offset,
         });
       }
-      if (!brand && S && !WiFi && !hit2) {
+      if (!brand && S && !WiFi && !hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -295,7 +915,7 @@ class ProductController {
           offset,
         });
       }
-      if (!brand && !S && !WiFi && !hit2) {
+      if (!brand && !S && !WiFi && !hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -304,7 +924,7 @@ class ProductController {
           offset,
         });
       }
-      if (brand && S && WiFi && hit2) {
+      if (brand && S && WiFi && hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -317,7 +937,7 @@ class ProductController {
           offset,
         });
       }
-      if (brand && !S && WiFi && hit2) {
+      if (brand && !S && WiFi && hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -329,7 +949,7 @@ class ProductController {
           offset,
         });
       }
-      if (!brand && S && WiFi && hit2) {
+      if (!brand && S && WiFi && hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -341,7 +961,7 @@ class ProductController {
           offset,
         });
       }
-      if (!brand && !S && WiFi && hit2) {
+      if (!brand && !S && WiFi && hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -352,7 +972,7 @@ class ProductController {
           offset,
         });
       }
-      if (brand && S && !WiFi && hit2) {
+      if (brand && S && !WiFi && hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -364,7 +984,7 @@ class ProductController {
           offset,
         });
       }
-      if (brand && !S && !WiFi && hit2) {
+      if (brand && !S && !WiFi && hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -375,7 +995,7 @@ class ProductController {
           offset,
         });
       }
-      if (!brand && S && !WiFi && hit2) {
+      if (!brand && S && !WiFi && hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
@@ -386,7 +1006,7 @@ class ProductController {
           offset,
         });
       }
-      if (!brand && !S && !WiFi && hit2) {
+      if (!brand && !S && !WiFi && hit2 && !external && !compressor) {
         products = await Product.findAndCountAll({
           where: {
             price: { [Op.between]: [minPrice, maxPrice] },
